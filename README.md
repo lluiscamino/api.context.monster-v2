@@ -36,7 +36,7 @@ properties:
     * Method: **GET**
     * URL: ``http://api.context.monster/v2/tweets/{id}``
     * Params:
-        * {id}: Integer
+        * ID: Integer
  2. Get Tweets
     * Method: **GET**
     * URL: ``http://api.context.monster/v2/tweets?limit={limit}&ratings={include_ratings}&order={order}``
@@ -96,7 +96,7 @@ A keyword is a string used to describe one or many images (tweets). It has the f
 * Searches: Number of times that the keyword has been searched.
 * Ratings: An array of ratings
 
-#####Endpoints
+##### Endpoints
 1. Get Keyword
     * Method: **GET**
     * URL: ``http://api.context.monster/v2/keywords/{keyword}``

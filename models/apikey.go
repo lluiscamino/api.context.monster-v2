@@ -21,7 +21,7 @@ type APIKey struct {
 	AccessLevel AccessLevel `json:"access_level" gorm:"not null"`
 	Creation    time.Time   `json:"creation" gorm:"not null"`
 	LastUse     time.Time   `json:"last_use" gorm:"not null"`
-	Logs        []APIKeyLog `json:"logs" gorm:"foreignkey:ApiKeyID;association_autoupdate:false;association_autocreate:false"`
+	Logs        []APIKeyLog `json:"logs,omitempty" gorm:"foreignkey:ApiKeyID;association_autoupdate:false;association_autocreate:false"`
 }
 
 const (
@@ -44,10 +44,17 @@ func (k *APIKey) valid(token string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(k.Key), []byte(token)) == nil
 }
 
-func getById(id int) APIKey {
+func getById(id uint) APIKey {
 	apiKey := &APIKey{}
 	GetDB().First(apiKey, id)
 	return *apiKey
+}
+
+func (k *APIKey) LoadLogs(limit uint) error {
+	if GetDB().Model(&k).Limit(limit).Order("id DESC").Related(&k.Logs).Error != nil {
+		return errors.New("could not load logs")
+	}
+	return nil
 }
 
 func (k *APIKey) RegisterUse(path string, method string, authorized bool) error {
@@ -74,7 +81,7 @@ func GetAPIKey(token string) (*APIKey, error) {
 	if err != nil {
 		return nil, errors.New("invalid token")
 	}
-	apiKey := getById(idInt)
+	apiKey := getById(uint(idInt))
 	if !apiKey.valid(split[1]) {
 		apiKey.Key = ""
 		return nil, errors.New("invalid token")

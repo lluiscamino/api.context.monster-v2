@@ -72,8 +72,11 @@ func GetTweet(w http.ResponseWriter, r *http.Request) {
 func GetTweets(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
-	if err != nil {
-		limit = 100
+	if err != nil || limit > maxLimit {
+		limit = maxLimit
+	}
+	if limit < 0 {
+		limit = 0
 	}
 	loadRatings, err := strconv.ParseBool(r.URL.Query().Get("ratings"))
 	if err != nil {
@@ -90,8 +93,11 @@ func GetTweets(w http.ResponseWriter, r *http.Request) {
 func SearchTweets(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
-	if err != nil {
-		limit = 100
+	if err != nil || limit > maxLimit {
+		limit = maxLimit
+	}
+	if limit < 0 {
+		limit = 0
 	}
 	order := strings.ToUpper(r.URL.Query().Get("order"))
 	if order != "ASC" && order != "DESC" {

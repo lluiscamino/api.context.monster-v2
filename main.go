@@ -16,6 +16,8 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc(prefix+"apikeys/new", controllers.CreateAPIKey).Methods("GET")
+	router.HandleFunc(prefix+"apikeys/info", controllers.ViewAPIKey).Methods("GET")
+	router.HandleFunc(prefix+"apikeys/logs", controllers.ViewAPIKeyLogs).Methods("GET")
 
 	router.HandleFunc(prefix+"tweets/{id}", controllers.GetTweet).Methods("GET")
 	router.HandleFunc(prefix+"tweets", controllers.GetTweets).Methods("GET")

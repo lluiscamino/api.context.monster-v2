@@ -130,6 +130,16 @@ done with a valid API Key is logged.
 ##### Endpoints
 1. Create API Key _(Currently disabled)_
     * Method: **GET**
-        * URL: ``http://api.context.monster/v2/apikeys/new?name=name``
+        * URL: ``http://api.context.monster/v2/apikeys/new?name={name}``
         * Params
             * Name: String
+            
+2. Get API Key info
+    * Method: **GET**
+        * URL: ``http://api.context.monster/v2/apikeys/info``
+        
+3. Get API Key logs
+    * Method: **GET**
+        * URL: ``http://api.context.monster/v2/apikeys/logs?limit={limit}``
+        * Params:
+            * Limit: Integer

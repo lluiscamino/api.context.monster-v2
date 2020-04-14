@@ -23,8 +23,11 @@ func GetKeyword(w http.ResponseWriter, r *http.Request) {
 func GetKeywords(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
-	if err != nil {
-		limit = 100
+	if err != nil || limit > maxLimit {
+		limit = maxLimit
+	}
+	if limit < 0 {
+		limit = 0
 	}
 	loadRatings, err := strconv.ParseBool(r.URL.Query().Get("ratings"))
 	if err != nil {
@@ -41,8 +44,11 @@ func GetKeywords(w http.ResponseWriter, r *http.Request) {
 func SearchKeywords(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
-	if err != nil {
-		limit = 100
+	if err != nil || limit > maxLimit {
+		limit = maxLimit
+	}
+	if limit < 0 {
+		limit = 0
 	}
 	loadRatings, err := strconv.ParseBool(r.URL.Query().Get("ratings"))
 	if err != nil {
